@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marjavara Listing Manager</title>
+  <meta name="description" content="A private tool that keeps the listings of one Etsy shop accurate. It reads the shop's own listings and updates their title, description and tags after the owner approves each change.">
+  <meta name="robots" content="index, follow">
+  <style>
+    :root {
+      --bg: #fbfaf7; --fg: #1b1f23; --muted: #4d565f; --line: #d8d4ca; --accent: #0b5c6f; --card: #ffffff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #111418; --fg: #eceae4; --muted: #b3b8bd; --line: #2c333a; --accent: #7fd3e6; --card: #171c21; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 1.0625rem/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    a { color: var(--accent); text-underline-offset: 0.2em; }
+    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+    .wrap { width: min(44rem, 100% - 2rem); margin-inline: auto; }
+    header { border-bottom: 1px solid var(--line); padding: 3rem 0 2rem; }
+    .eyebrow { margin: 0 0 0.75rem; font-size: 0.8125rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    h1 { margin: 0 0 1rem; font-size: clamp(1.9rem, 5vw, 2.7rem); line-height: 1.15; letter-spacing: -0.01em; }
+    .lede { margin: 0; font-size: 1.15rem; color: var(--muted); }
+    main { padding: 1rem 0 3rem; }
+    section { padding-top: 2rem; }
+    h2 { margin: 0 0 0.75rem; font-size: 1.3rem; line-height: 1.25; }
+    p, ul { margin: 0 0 1rem; }
+    ul { padding-left: 1.25rem; }
+    li { margin-bottom: 0.45rem; }
+    table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); }
+    th, td { text-align: left; vertical-align: top; padding: 0.7rem 0.85rem; border-bottom: 1px solid var(--line); font-size: 0.98rem; }
+    th { width: 9.5rem; font-weight: 600; }
+    tr:last-child th, tr:last-child td { border-bottom: 0; }
+    code { font: 0.92em ui-monospace, SFMono-Regular, Consolas, monospace; }
+    footer { border-top: 1px solid var(--line); padding: 1.75rem 0 3rem; color: var(--muted); font-size: 0.92rem; }
+    footer p { margin-bottom: 0.6rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <p class="eyebrow">Marjavara Solutions</p>
+      <h1>Marjavara Listing Manager</h1>
+      <p class="lede">A private tool that keeps the listings of one Etsy shop accurate. It reads the shop's own listings, and updates their title, description and tags only after the shop owner has approved each change.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section aria-labelledby="what">
+      <h2 id="what">What it does</h2>
+      <ul>
+        <li>Reads the listings of the shop owner's own Etsy shop.</li>
+        <li>Compares each listing with the approved product description kept by the shop owner, and reports where they differ.</li>
+        <li>Updates the <strong>title</strong>, <strong>description</strong> and <strong>tags</strong> of an existing listing, one change at a time, and only after the owner has approved that exact change.</li>
+        <li>Reads the listing back from Etsy afterwards to confirm the change is what Etsy now shows.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="not">
+      <h2 id="not">What it does not do</h2>
+      <ul>
+        <li>It does not create, publish, relist or renew listings, and it never changes a listing's state.</li>
+        <li>It does not change prices, images, inventory or the files buyers receive.</li>
+        <li>It does not read orders, receipts, messages or any buyer information.</li>
+        <li>It talks to Etsy only through the official Etsy Open API, and it is not offered to other sellers.</li>
+        <li>It does not show advertising, and it does not sell, share or resell any data.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="who">
+      <h2 id="who">Who uses it</h2>
+      <p>One person: the owner of the shop it is connected to, working on that shop's own listings. It is not a public service and has no accounts for other people.</p>
+    </section>
+
+    <section aria-labelledby="access">
+      <h2 id="access">Etsy access it asks for, and why</h2>
+      <table>
+        <tbody>
+          <tr><th scope="row"><code>listings_r</code></th><td>To read the shop's listings so they can be compared with the approved description and checked after an update.</td></tr>
+          <tr><th scope="row"><code>listings_w</code></th><td>To update the title, description and tags of an existing listing, after the owner has approved that change.</td></tr>
+          <tr><th scope="row"><code>shops_r</code></th><td>To find the shop that belongs to the connected account.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section aria-labelledby="safety">
+      <h2 id="safety">How changes are controlled</h2>
+      <p>Every write to Etsy needs a separate, single-use approval from the shop owner that names the exact listing and the exact content. If the content changes after approval, the approval no longer applies. If Etsy does not answer, or the result is unclear, the tool stops and checks the listing before doing anything else, so a listing is never created twice or changed twice by mistake.</p>
+    </section>
+
+    <section aria-labelledby="privacy">
+      <h2 id="privacy">Privacy</h2>
+      <ul>
+        <li>The tool runs on the shop owner's own computer. There is no server operated for it and no database of users.</li>
+        <li>The Etsy access token is stored in a file on that computer, readable only by its owner, and is never sent anywhere except to Etsy.</li>
+        <li>The tool does not collect or store buyer personal data, because it never requests it.</li>
+        <li>This website has no cookies, no analytics, no forms and no scripts.</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="contact">
+      <h2 id="contact">Contact</h2>
+      <p>Marjavara Solutions, Norway. <a href="mailto:marius.marjavara@gmail.com">marius.marjavara@gmail.com</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>The term "Etsy" is a trademark of Etsy, Inc. This application uses the Etsy API but is not endorsed or certified by Etsy, Inc.</p>
+      <p>&copy; Marjavara Solutions</p>
+    </div>
+  </footer>
+</body>
+</html>
